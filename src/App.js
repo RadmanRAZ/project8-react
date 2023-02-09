@@ -1,25 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+  const[value , setValue] = React.useState('')
+  const[result , setResult] = React.useState("")
+
+  
+
+  const fetchData = ()=>{
+    fetch(`https://api.unsplash.com/search/photos?page=1&query=${value}&client_id=OI6o_Ea1sSddIQpgq0wYgHKPIXTCePiFaxftLa236Fk`)
+    .then(res => res.json())
+    .then(data =>{
+      setResult(data.results);
+      
+    })
+
+
+    
+  }
+
+ 
+  return(
+    <div>
+      <div className='header'>  
+      <p>جستجو</p>
+      <input type="text" value={value} onChange = {(e)=>setValue(e.target.value)} />
+      <button onClick={fetchData} >ارسال</button>
     </div>
-  );
+    <div className='images'>
+      <div className='gallery'>
+      {
+        result && result.map((item)=>{
+           return <img src={item.urls.regular} alt=""/>
+        })
+      }
+      </div>
+    </div>
+    </div>
+    
+  )
 }
 
 export default App;
